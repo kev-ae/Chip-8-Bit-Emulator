@@ -4,7 +4,7 @@
 class Chip_8 {
     private:
         unsigned char memory[4096];
-        unsigned char display[64 * 32];
+        unsigned char display[64][32];
         unsigned short pc;
         unsigned short I;
         unsigned short stack[16];
