@@ -43,6 +43,7 @@ class Chip_8 {
 		void load_game(const char*);
 		void emulate_cycle(void);
 		void set_keys(void);
+		unsigned char get_display_at(int, int);
 };
 
 #endif

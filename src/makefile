@@ -1,5 +1,5 @@
-chip8: main.o chip_8.o
-	g++ -Wall -pedantic-errors -std=c++14 -g -O0 main.o chip_8.o -o chip8
+chip8: main.cpp chip_8.o
+	g++ -Wall -pedantic-errors -std=c++14 -g -O0 main.cpp chip_8.o -o chip8 -lSDL2main -lSDL2
 
 main.o: main.cpp chip_8.h
 	gcc -Wall -pedantic-errors -std=c++14 -g -O0 -lSDL2main -lSDL2 -c main.cpp

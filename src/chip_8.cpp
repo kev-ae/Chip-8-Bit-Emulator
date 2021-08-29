@@ -1,7 +1,7 @@
 #include "chip_8.h"
-#include <stdexcept>
 #include <stdio.h>
 #include <ctype.h>
+#include <string>
 
 /**
  * Initialized emulator. Funtion will clear display, memory, register, stack
@@ -54,13 +54,13 @@ void Chip_8::load_game(const char* ROM) {
 
 	rom_file = fopen(ROM, "r");
 	if (rom_file == NULL)
-		throw std::invalid_argument("The ROM given produce an empty file");
+		throw "The ROM given produce an empty file";
 
 	fseek(rom_file, 0, SEEK_END);
 	len = ftell(rom_file);
 
 	if (len > 3584)
-		throw std::length_error("The ROM file's size is too large");
+		throw "The ROM file's size is too large";
 
 	while(!feof(rom_file)) {
 		if (fgets(buffer, 3584, rom_file) == NULL)
@@ -191,6 +191,7 @@ void Chip_8::emulate_cycle(void) {
 						}
 					}
 				}
+				draw_flag = true;
 			}
 			break;
 		case 0xE000:
@@ -245,6 +246,14 @@ void Chip_8::set_keys(void) {
 
 }
 
+unsigned char Chip_8::get_display_at(int x, int y) {
+	if(x >= 64 || y >= 32) {
+		throw "Error: display at (" + std::to_string(x) + "," + std::to_string(y) + ") cannot be found";
+	}
+
+	return display[x][y];
+}
+
 /**
  * Push the given address onto the stack.
  *
@@ -256,7 +265,7 @@ void Chip_8::push(short address) {
 	if (sp < 16) {
 		stack[sp++] = address;
 	} else {
-		throw std::overflow_error("sp value is 16 or over");
+		throw "sp value is 16 or over";
 	}
 }
 
@@ -268,6 +277,6 @@ void Chip_8::push(short address) {
  */
 short Chip_8::pop(void) {
 	if (sp <= 0)
-		throw std::underflow_error("sp value is 0 or less");
+		throw "sp value is 0 or less";
 	return stack[--sp];
 }
